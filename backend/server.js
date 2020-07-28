@@ -71,6 +71,8 @@ wss.on('connection', function connection(ws) {
         console.log(`message value: ${msg.value}`);
         if (msg.type === "input") {
             client.publish({ destination: "/queue/input", body: JSON.stringify(msg.value) })
+        } else if (msg.type === "connection") {
+            client.publish({ destination: "/queue/connection", body: JSON.stringify("connect") })
         }
     });
 
