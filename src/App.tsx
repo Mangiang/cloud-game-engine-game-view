@@ -1,7 +1,6 @@
 import './App.css'
 import * as BABYLON from 'babylonjs'
-import React, { useRef } from 'react'
-import { useEffect } from 'react'
+import React, { useRef, useEffect } from 'react'
 
 const App = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -19,10 +18,21 @@ const App = () => {
       )
       camera.setTarget(BABYLON.Vector3.Zero())
       const box = BABYLON.Mesh.CreateBox('Box', 4.0, scene)
+      scene.actionManager = new BABYLON.ActionManager(scene);
+      scene.actionManager.registerAction(
+        new BABYLON.ExecuteCodeAction(
+          {
+            trigger: BABYLON.ActionManager.OnKeyDownTrigger
+          },
+          (evt) => {
+            console.log(`${evt.sourceEvent.key} button was pressed`)
+          },
+        ),
+      )
 
       engine.runRenderLoop(() => scene.render())
     }
-  })
+  }, [])
 
   return <canvas id="babylon-canvas" ref={canvasRef} width={640} height={425} />
 }
