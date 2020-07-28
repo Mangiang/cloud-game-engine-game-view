@@ -17,6 +17,7 @@ const App = () => {
     myClient.onopen = () => {
       console.log('WebSocket Client Connected')
       if (canvasRef.current) {
+        myClient.send(JSON.stringify({type: "connection"}));
         const canvas = canvasRef.current
         const engine = new BABYLON.Engine(canvas, true)
         const sceneTmp = new BABYLON.Scene(engine)
