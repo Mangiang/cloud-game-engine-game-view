@@ -32,7 +32,7 @@ jobs:
         # Server address of Docker registry. If not set then will default to Docker Hub
         #registry: # optional
         # Docker repository to tag the image with
-        repository: shirito/cloud-game-game-view
+        repository: shirito/cloud-game-engine-game-view
         # Comma-delimited list of tags. These will be added to the registry/repository to form the image's tags
         tags: latest # optional
         # Automatically tags the built image with the git reference as per the readme
