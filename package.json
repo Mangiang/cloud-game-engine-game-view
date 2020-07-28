@@ -2,7 +2,7 @@
     "name": "cloud-game-engine-game-view",
     "version": "0.1.0",
     "private": true,
-    "homepage": "",
+    "homepage": "./plugins/cloud-game-engine-game-view/",
     "dependencies": {
         "@stomp/stompjs": "^5.4.4",
         "babylonjs": "^4.1.0",
