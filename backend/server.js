@@ -51,7 +51,9 @@ client.onConnect = function(frame) {
     // Do something, all subscribes must be done is this callback
     // This is needed because this will be executed after a (re)connect
     console.log('Stomp Connected')
-    const subscription = client.subscribe('/queue/game_state', function(message) {
+    const subscription = client.subscribe('/queue/game_state', function(
+        message,
+    ) {
         console.log(message)
         wsArray.forEach((ws) => {
             ws.send(
@@ -63,19 +65,34 @@ client.onConnect = function(frame) {
 }
 client.activate()
 
+function publishInput(body) {
+    return new Promise((resolve) => {
+        client.publish({
+            destination: '/queue/input',
+            body: JSON.stringify(body),
+        })
+    })
+}
+
+function publishConnection(time) {
+    return new Promise((resolve) => {
+        client.publish({
+            destination: '/queue/connection',
+            body: JSON.stringify({ type: 'connection', time: time }),
+        })
+    })
+}
+
 wss.on('connection', function connection(ws) {
-    ws.on('message', function incoming(message) {
+    ws.on('message', async function incoming(message) {
         const msg = JSON.parse(message)
         console.log(`received: ${msg}`)
         console.log(`message type: ${msg.type}`)
         console.log(`message value: ${msg.value}`)
         if (msg.type === 'input') {
-            client.publish({
-                destination: '/queue/input',
-                body: JSON.stringify(msg.value),
-            })
+            publishInput(msg.value)
         } else if (msg.type === 'connection') {
-            client.publish({ destination: '/queue/connection', body: 'connect' })
+            publishConnection(msg.time)
         }
     })
 

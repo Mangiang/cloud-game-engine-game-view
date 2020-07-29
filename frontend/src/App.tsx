@@ -15,6 +15,10 @@ const App = () => {
     const value = JSON.parse(data.value.toString())
     console.log(`value: ${JSON.stringify(value)}`)
     if (value.type === 'instantiate') {
+      let date = Date.now();
+      console.log(`instantiate time: ${value.time}`);
+      console.log(`instantiate date: ${date}`);
+      console.log(`instantiate operation: ${date - value.time}`);
       if (value.mesh === 'box') {
         // {"type": "instantiate", "mesh": "box", "name": "Box", "scale": 4}
         console.log(`Instancing a ${value.mesh} object`)
@@ -26,6 +30,11 @@ const App = () => {
         scene!.addMesh(box)
       }
     } else if (value.type === 'translation') {
+      let date = Date.now();
+      console.log(`translation time: ${value.time}`);
+      console.log(`translation time: ${value.time}`);
+      console.log(`translation date: ${date}`);
+      console.log(`translation operation: ${date - value.time}`);
       // {"type": "translation", "vector": {"x": 0, "y":1, "z":0}, "name": "Box", "distance": 5}
       console.log(`Apply translation to ${value.name} object`)
       const mesh:
@@ -68,7 +77,7 @@ const App = () => {
               myClient.send(
                 JSON.stringify({
                   type: 'input',
-                  value: { action: 'KEY_DOWN', key: evt.sourceEvent.key },
+                  value: { action: 'KEY_DOWN', key: evt.sourceEvent.key, time: Date.now()},
                 }),
               )
             },
@@ -84,7 +93,7 @@ const App = () => {
   useEffect(() => {
     if (client && scene) {
       client.onmessage = onmessage;
-      client.send(JSON.stringify({ type: 'connection' }))
+      client.send(JSON.stringify({ type: 'connection', time: Date.now()}))
     }
   }, [client, scene])
 
