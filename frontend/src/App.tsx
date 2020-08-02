@@ -12,7 +12,7 @@ const App = () => {
   function onmessage(message: IMessageEvent) {
     console.log(message)
     const data = JSON.parse(message.data.toString())
-    const value = JSON.parse(data.value.toString())
+    const value = data.value
     console.log(`value: ${JSON.stringify(value)}`)
     if (value.type === 'instantiate') {
       let date = Date.now();
